@@ -159,9 +159,9 @@ app_license = "mit"
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "blinkit_connector.event.get_events"
-# }
+override_whitelisted_methods = {
+	"blinkit_connector": "blinkit_connector.event.blinkit_connector"
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,

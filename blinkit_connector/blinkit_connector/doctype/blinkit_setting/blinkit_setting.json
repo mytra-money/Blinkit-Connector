@@ -1,0 +1,62 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-10-30 16:28:40.716854",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "blinkit_user",
+  "url",
+  "get_auth_header",
+  "column_break_dtxs"
+ ],
+ "fields": [
+  {
+   "description": "API Key and Secret will be generated (in case not available) and shared to Blinkit for this user and this user will be used to create the Sales Orders.",
+   "fieldname": "blinkit_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Blinkit User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_dtxs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "label": "URL",
+   "read_only": 1
+  },
+  {
+   "fieldname": "get_auth_header",
+   "fieldtype": "Button",
+   "label": "Get Auth Header"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-11-01 11:50:59.035876",
+ "modified_by": "Administrator",
+ "module": "Blinkit Connector",
+ "name": "Blinkit Setting",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
