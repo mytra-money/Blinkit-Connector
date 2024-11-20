@@ -5,4 +5,4 @@ class utils:
         self.data = frappe._dict(data)
     
     def sync_order(self):
-        return
+        return "success"

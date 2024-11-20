@@ -1,7 +1,7 @@
 import frappe
 from blinkit_connector.utils import utils
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def blinkit_connector():
     url_parts = frappe.request.path[1:].split("/",3)
     request = url_parts[-1] if url_parts[-1][0] != "/" else url_parts[-1][1:]
