@@ -5,10 +5,20 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "api_setting_tab",
+  "vendor_code",
   "blinkit_user",
+  "column_break_dtxs",
   "url",
   "get_auth_header",
-  "column_break_dtxs"
+  "setup_tab",
+  "company",
+  "default_item",
+  "default_warehouse",
+  "column_break_btvr",
+  "submit_so",
+  "section_break_xanf",
+  "linked_warehouses"
  ],
  "fields": [
   {
@@ -34,12 +44,69 @@
    "fieldname": "get_auth_header",
    "fieldtype": "Button",
    "label": "Get Auth Header"
+  },
+  {
+   "fieldname": "setup_tab",
+   "fieldtype": "Tab Break",
+   "label": "Transaction Setting"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "default_item",
+   "fieldtype": "Link",
+   "label": "Default Item",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "default_warehouse",
+   "fieldtype": "Link",
+   "label": "Default Warehouse",
+   "options": "Warehouse",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vendor_code",
+   "fieldtype": "Data",
+   "label": "Vendor Code"
+  },
+  {
+   "fieldname": "api_setting_tab",
+   "fieldtype": "Tab Break",
+   "label": "API Setting"
+  },
+  {
+   "fieldname": "column_break_btvr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "On enabling this option, the Sales Orders shall be automatically submitted once the PO is received from Blinkit",
+   "fieldname": "submit_so",
+   "fieldtype": "Check",
+   "label": "Submit Sales Order on Sync"
+  },
+  {
+   "fieldname": "section_break_xanf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "linked_warehouses",
+   "fieldtype": "Table",
+   "label": "Linked Warehouses",
+   "options": "Blinkit Warehouse Settings"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-11-01 11:50:59.035876",
+ "modified": "2024-11-21 15:13:41.920989",
  "modified_by": "Administrator",
  "module": "Blinkit Connector",
  "name": "Blinkit Setting",

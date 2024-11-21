@@ -4,6 +4,8 @@
 import frappe
 from frappe.utils.data import get_url
 from frappe.model.document import Document
+from frappe.core.doctype.user.user import generate_keys
+from frappe.utils.password import get_decrypted_password
 
 
 class BlinkitSetting(Document):
@@ -13,9 +15,12 @@ class BlinkitSetting(Document):
 			self.url = get_url("/api/method/blinkit_connector/sync_order")
 	
 	def validate_user(self):
-		return
+		if not frappe.db.get_value("User", {"name": self.blinkit_user}, "api_secret"):
+			generate_keys(self.blinkit_user)
 
 	@frappe.whitelist()
 	def get_token(self):
-		token =  "token 19e349c2b8f069a:8873bdc356e3a1c"
+		api_key = frappe.db.get_value("User", {"name": self.blinkit_user}, "api_key")
+		api_secret = get_decrypted_password("User", self.blinkit_user, fieldname="api_secret")
+		token =  "token {0}:{1}".format(api_key, api_secret)
 		return frappe.msgprint("Auth Header: {0}".format(token))
