@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class BlinkitWarehouseSettings(Document):
+class BlinkitWarehouseSetting(Document):
 	pass

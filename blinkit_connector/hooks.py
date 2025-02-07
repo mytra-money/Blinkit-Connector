@@ -122,34 +122,36 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Quotation": {
+		"on_submit": "blinkit_connector.doctype_events.quotation.on_submit"
+	},
+	"Sales Order": {
+		"after_insert": "blinkit_connector.doctype_events.sales_order.after_insert",
+		"on_submit": "blinkit_connector.doctype_events.sales_order.on_submit"
+	}
+}
 
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"blinkit_connector.tasks.all"
-# 	],
+scheduler_events = {
+#	"all": [
+#		"blinkit_connector.tasks.all"
+#	],
 # 	"daily": [
 # 		"blinkit_connector.tasks.daily"
 # 	],
-# 	"hourly": [
-# 		"blinkit_connector.tasks.hourly"
-# 	],
+	"hourly": [
+		"blinkit_connector.tasks.hourly"
+	],
 # 	"weekly": [
 # 		"blinkit_connector.tasks.weekly"
 # 	],
 # 	"monthly": [
 # 		"blinkit_connector.tasks.monthly"
 # 	],
-# }
+}
 
 # Testing
 # -------

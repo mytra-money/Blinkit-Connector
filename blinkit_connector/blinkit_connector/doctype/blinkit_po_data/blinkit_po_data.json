@@ -5,16 +5,20 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "po_data",
+  "po_number",
+  "status",
+  "sync_via",
+  "sync_doc",
   "column_break_lwtb",
-  "status"
+  "po_data"
  ],
  "fields": [
   {
    "fieldname": "po_data",
    "fieldtype": "Code",
    "label": "PO Data",
-   "options": "JSON"
+   "options": "JSON",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_lwtb",
@@ -24,13 +28,31 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "Initiated\nAccepted\nCancelled"
+   "options": "Initiated\nCreated\nAccepted\nCancelled"
+  },
+  {
+   "fieldname": "po_number",
+   "fieldtype": "Data",
+   "label": "PO Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sync_via",
+   "fieldtype": "Link",
+   "label": "Sync Via",
+   "options": "DocType"
+  },
+  {
+   "fieldname": "sync_doc",
+   "fieldtype": "Dynamic Link",
+   "label": "Sync Doc",
+   "options": "sync_via"
   }
  ],
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-21 15:40:33.770804",
+ "modified": "2024-12-08 16:17:19.386234",
  "modified_by": "Administrator",
  "module": "Blinkit Connector",
  "name": "Blinkit PO Data",

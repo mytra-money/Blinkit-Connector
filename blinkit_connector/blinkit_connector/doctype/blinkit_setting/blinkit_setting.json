@@ -1,26 +1,38 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2024-10-30 16:28:40.716854",
+ "creation": "2024-12-02 13:14:25.257790",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "api_setting_tab",
   "vendor_code",
   "blinkit_user",
-  "column_break_dtxs",
+  "column_break_wmpv",
   "url",
   "get_auth_header",
-  "setup_tab",
+  "transaction_setting_tab",
   "company",
   "default_item",
   "default_warehouse",
-  "column_break_btvr",
-  "submit_so",
-  "section_break_xanf",
+  "default_customer",
+  "column_break_zgrn",
+  "sync_via",
+  "submit_doc",
+  "section_break_kvoi",
   "linked_warehouses"
  ],
  "fields": [
+  {
+   "fieldname": "api_setting_tab",
+   "fieldtype": "Tab Break",
+   "label": "API Setting"
+  },
+  {
+   "fieldname": "vendor_code",
+   "fieldtype": "Data",
+   "label": "Vendor Code"
+  },
   {
    "description": "API Key and Secret will be generated (in case not available) and shared to Blinkit for this user and this user will be used to create the Sales Orders.",
    "fieldname": "blinkit_user",
@@ -31,7 +43,7 @@
    "reqd": 1
   },
   {
-   "fieldname": "column_break_dtxs",
+   "fieldname": "column_break_wmpv",
    "fieldtype": "Column Break"
   },
   {
@@ -46,7 +58,7 @@
    "label": "Get Auth Header"
   },
   {
-   "fieldname": "setup_tab",
+   "fieldname": "transaction_setting_tab",
    "fieldtype": "Tab Break",
    "label": "Transaction Setting"
   },
@@ -72,41 +84,45 @@
    "reqd": 1
   },
   {
-   "fieldname": "vendor_code",
-   "fieldtype": "Data",
-   "label": "Vendor Code"
-  },
-  {
-   "fieldname": "api_setting_tab",
-   "fieldtype": "Tab Break",
-   "label": "API Setting"
-  },
-  {
-   "fieldname": "column_break_btvr",
+   "fieldname": "column_break_zgrn",
    "fieldtype": "Column Break"
   },
   {
-   "default": "0",
-   "description": "On enabling this option, the Sales Orders shall be automatically submitted once the PO is received from Blinkit",
-   "fieldname": "submit_so",
-   "fieldtype": "Check",
-   "label": "Submit Sales Order on Sync"
-  },
-  {
-   "fieldname": "section_break_xanf",
+   "fieldname": "section_break_kvoi",
    "fieldtype": "Section Break"
   },
   {
    "fieldname": "linked_warehouses",
    "fieldtype": "Table",
    "label": "Linked Warehouses",
-   "options": "Blinkit Warehouse Settings"
+   "options": "Blinkit Warehouse Setting"
+  },
+  {
+   "fieldname": "default_customer",
+   "fieldtype": "Link",
+   "label": "Default Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sync_via",
+   "fieldtype": "Select",
+   "label": "Sync Blinkit PO Via",
+   "options": "Quotation\nSales Order",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:!doc.create_quotation",
+   "fieldname": "submit_doc",
+   "fieldtype": "Check",
+   "label": "Submit Doc on Sync"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-11-21 15:13:41.920989",
+ "modified": "2024-12-07 13:28:21.309577",
  "modified_by": "Administrator",
  "module": "Blinkit Connector",
  "name": "Blinkit Setting",
