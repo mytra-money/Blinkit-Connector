@@ -1,0 +1,75 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-11-21 15:07:29.305937",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "blinkit_outlet_id",
+  "customer",
+  "customer_address",
+  "shipping_address",
+  "billing_address",
+  "warehouse"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer_address",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer Billing Address",
+   "options": "Address",
+   "reqd": 1
+  },
+  {
+   "fieldname": "shipping_address",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer Shipping Address",
+   "options": "Address",
+   "reqd": 1
+  },
+  {
+   "fieldname": "blinkit_outlet_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Blinkit Outlet ID",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "billing_address",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company Billing Address",
+   "options": "Address",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-12-08 16:28:40.857291",
+ "modified_by": "Administrator",
+ "module": "Blinkit Connector",
+ "name": "Blinkit Warehouse Setting",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
