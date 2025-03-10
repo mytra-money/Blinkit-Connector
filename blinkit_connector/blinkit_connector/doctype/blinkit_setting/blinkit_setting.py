@@ -16,6 +16,8 @@ class BlinkitSetting(Document):
 		if not self.url:
 			self.url = get_url("/api/method/blinkit_connector/sync_order")
 		setup_custom_fields()
+		if self.base_url and self.base_url[-1] != "/":
+			self.base_url = self.base_url + "/"
 	
 	def validate_user(self):
 		if not frappe.db.get_value("User", {"name": self.blinkit_user}, "api_secret"):
@@ -106,7 +108,49 @@ def setup_custom_fields():
 				read_only=1,
 				print_hide=1,
 			)
-		]
+		],
+		# "Sales Invoice Item": [
+		# 	dict(
+		# 		fieldname="blinkit_po_line_number",
+		# 		label="Blinkit PO Line Number",
+		# 		fieldtype="Int",
+		# 		insert_after="so_detail",
+		# 		read_only=1,
+		# 		print_hide=1,
+		# 	)
+		# ],
+		# "Delivery Note Item": [
+		# 	dict(
+		# 		fieldname="blinkit_po_line_number",
+		# 		label="Blinkit PO Line Number",
+		# 		fieldtype="Int",
+		# 		insert_after="so_detail",
+		# 		read_only=1,
+		# 		print_hide=1,
+		# 	)
+		# ],
+		# "Sales Order Item": [
+		# 	dict(
+		# 		fieldname="blinkit_po_line_number",
+		# 		label="Blinkit PO Line Number",
+		# 		fieldtype="Int",
+		# 		insert_after="quotation_item",
+		# 		read_only=1,
+		# 		print_hide=1,
+		# 	)
+		# ],
+		# "Quotation Item": [
+		# 	dict(
+		# 		fieldname="blinkit_po_line_number",
+		# 		label="Blinkit PO Line Number",
+		# 		fieldtype="Int",
+		# 		insert_after="warehouse",
+		# 		read_only=1,
+		# 		print_hide=1,
+		# 	)
+		# ]
+		
+	
 	}
 
 	create_custom_fields(custom_fields)

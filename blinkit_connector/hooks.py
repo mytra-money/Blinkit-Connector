@@ -124,11 +124,11 @@ app_license = "mit"
 
 doc_events = {
 	"Quotation": {
-		"on_submit": "blinkit_connector.doctype_events.quotation.on_submit"
+		"before_submit": "blinkit_connector.doctype_events.quotation.before_submit"
 	},
 	"Sales Order": {
 		"after_insert": "blinkit_connector.doctype_events.sales_order.after_insert",
-		"on_submit": "blinkit_connector.doctype_events.sales_order.on_submit"
+		"before_submit": "blinkit_connector.doctype_events.sales_order.before_submit"
 	}
 }
 

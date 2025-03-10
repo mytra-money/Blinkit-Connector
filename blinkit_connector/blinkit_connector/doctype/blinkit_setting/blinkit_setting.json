@@ -6,10 +6,11 @@
  "engine": "InnoDB",
  "field_order": [
   "api_setting_tab",
-  "vendor_code",
-  "blinkit_user",
+  "base_url",
+  "auth_header",
   "column_break_wmpv",
   "url",
+  "blinkit_user",
   "get_auth_header",
   "transaction_setting_tab",
   "company",
@@ -29,12 +30,7 @@
    "label": "API Setting"
   },
   {
-   "fieldname": "vendor_code",
-   "fieldtype": "Data",
-   "label": "Vendor Code"
-  },
-  {
-   "description": "API Key and Secret will be generated (in case not available) and shared to Blinkit for this user and this user will be used to create the Sales Orders.",
+   "description": "API Key and Secret will be generated (in case not available) and shared to Blinkit for this user and this user will be used to sync the Order.",
    "fieldname": "blinkit_user",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -49,7 +45,7 @@
   {
    "fieldname": "url",
    "fieldtype": "Data",
-   "label": "URL",
+   "label": "Callback URL",
    "read_only": 1
   },
   {
@@ -117,12 +113,23 @@
    "fieldname": "submit_doc",
    "fieldtype": "Check",
    "label": "Submit Doc on Sync"
+  },
+  {
+   "fieldname": "base_url",
+   "fieldtype": "Data",
+   "label": "Base URL"
+  },
+  {
+   "fieldname": "auth_header",
+   "fieldtype": "Password",
+   "label": "Auth Header",
+   "mandatory_depends_on": "eval: doc.base_url"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-12-07 13:28:21.309577",
+ "modified": "2025-03-08 19:04:58.210770",
  "modified_by": "Administrator",
  "module": "Blinkit Connector",
  "name": "Blinkit Setting",

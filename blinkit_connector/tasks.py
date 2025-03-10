@@ -73,7 +73,8 @@ def create_sales_docs():
                 "uom": "Nos",
                 "rate": item.get("cost_price"),
                 "conversion_factor": 1.0,
-                "warehouse": customer_and_billing_details.warehouse
+                "warehouse": customer_and_billing_details.warehouse,
+                # "blinkit_po_line_number": item.get("line_number")
             }
             so.append("items", item_details)
         so.taxes_and_charges = None
@@ -114,6 +115,7 @@ def create_sales_docs():
                 "uom": "Nos",
                 "rate": item.get("cost_price"),
                 "conversion_factor": 1.0,
+                # "blinkit_po_line_number": item.get("line_number")
             }
             quotation.append("items", item_details)
         quotation.taxes_and_charges = None
