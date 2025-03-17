@@ -68,7 +68,7 @@ app_license = "mit"
 # ------------
 
 # before_install = "blinkit_connector.install.before_install"
-# after_install = "blinkit_connector.install.after_install"
+after_install = "blinkit_connector.setup.after_install"
 
 # Uninstallation
 # ------------

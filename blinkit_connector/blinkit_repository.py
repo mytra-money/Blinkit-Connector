@@ -21,7 +21,10 @@ class BlinkitRepository:
     ) -> dict:
         url = self.base_url + append_to_base_uri
         headers = {}
-        # headers = self.get_headers()
+        headers = {
+            "Accept": "application/json",
+            "Authorization": "Token {0}".format(self.auth_header)
+        }
         headers["Accept"] = "application/json"
         if log_request:
             integration_request = create_request_log(data=data, service_name="BlinkIt EDI", request_headers=headers, is_remote_request=1, url=url)

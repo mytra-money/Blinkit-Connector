@@ -50,8 +50,8 @@ def create_sales_docs():
         transaction_date = getdate(purchase_order_details.get("issue_date"))
         customer_and_billing_details = get_customer_and_billing_details(order_details)
         so = frappe.new_doc("Sales Order")
-        so.blinkit_edi_order = 1
-        so.blinkit_po = blinkit_po_data
+        # so.blinkit_edi_order = 1
+        # so.blinkit_po = blinkit_po_data
         so.customer = customer_and_billing_details.customer
         so.po_no = purchase_order_details.get("purchase_order_number")
         so.po_date = transaction_date
@@ -74,7 +74,8 @@ def create_sales_docs():
                 "rate": item.get("cost_price"),
                 "conversion_factor": 1.0,
                 "warehouse": customer_and_billing_details.warehouse,
-                # "blinkit_po_line_number": item.get("line_number")
+                "blinkit_po_line_number": item.get("line_number"),
+                "blinkit_po": blinkit_po_data
             }
             so.append("items", item_details)
         so.taxes_and_charges = None
@@ -94,8 +95,8 @@ def create_sales_docs():
         transaction_date = getdate(purchase_order_details.get("issue_date"))
         customer_and_billing_details = get_customer_and_billing_details(order_details)
         quotation = frappe.new_doc("Quotation")
-        quotation.blinkit_edi_order = 1
-        quotation.blinkit_po = blinkit_po_data
+        # quotation.blinkit_edi_order = 1
+        # quotation.blinkit_po = blinkit_po_data
         quotation.quotation_to = "Customer"
         quotation.party_name = customer_and_billing_details.customer
         quotation.transaction_date = transaction_date
@@ -115,7 +116,8 @@ def create_sales_docs():
                 "uom": "Nos",
                 "rate": item.get("cost_price"),
                 "conversion_factor": 1.0,
-                # "blinkit_po_line_number": item.get("line_number")
+                "blinkit_po_line_number": item.get("line_number"),
+                "blinkit_po": blinkit_po_data
             }
             quotation.append("items", item_details)
         quotation.taxes_and_charges = None
