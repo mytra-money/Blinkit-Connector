@@ -2,5 +2,6 @@ import frappe
 from blinkit_connector.blinkit_repository import BlinkitRepository
 
 def before_submit(doc, method=None):
-    if doc.blinkit_edi_order and frappe.db.get_value("Blinkit PO Data", doc.blinkit_po, "sync_doc") == doc.name:
-        BlinkitRepository().acknowledge_po(doc.blinkit_po)
+    if any(i.get("blinkit_po") for i in doc.items):
+        blinkit_po = doc.items[0].blinkit_po
+        BlinkitRepository().acknowledge_po(blinkit_po)

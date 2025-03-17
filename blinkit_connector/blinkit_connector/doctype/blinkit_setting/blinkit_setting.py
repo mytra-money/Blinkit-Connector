@@ -15,7 +15,7 @@ class BlinkitSetting(Document):
 		self.validate_user()
 		if not self.url:
 			self.url = get_url("/api/method/blinkit_connector/sync_order")
-		setup_custom_fields()
+		# setup_custom_fields()
 		if self.base_url and self.base_url[-1] != "/":
 			self.base_url = self.base_url + "/"
 	
@@ -33,124 +33,159 @@ class BlinkitSetting(Document):
 
 def setup_custom_fields():
 	custom_fields = {
-		"Quotation": [
-			dict(
-				fieldname="blinkit_edi_order",
-				label="Blinkit EDI Order",
-				fieldtype="Check",
-				insert_after="title",
-				read_only=1,
-				print_hide=1,
-			),
-			dict(
-				fieldname="blinkit_po",
-				label="Blinkit PO Data",
-				fieldtype="Link",
-				insert_after="blinkit_edi_order",
-				options="Blinkit PO Data",
-				read_only=1,
-				print_hide=1,
-			)
-		],
-		"Sales Order": [
-			dict(
-				fieldname="blinkit_edi_order",
-				label="Blinkit EDI Order",
-				fieldtype="Check",
-				insert_after="title",
-				read_only=1,
-				print_hide=1,
-			),
-			dict(
-				fieldname="blinkit_po",
-				label="Blinkit PO Data",
-				fieldtype="Link",
-				insert_after="blinkit_edi_order",
-				options="Blinkit PO Data",
-				read_only=1,
-				print_hide=1,
-			)
-		],
-		"Delivery Note": [
-			dict(
-				fieldname="blinkit_edi_order",
-				label="Blinkit EDI Order",
-				fieldtype="Check",
-				insert_after="title",
-				read_only=1,
-				print_hide=1,
-			),
-			dict(
-				fieldname="blinkit_po",
-				label="Blinkit PO Data",
-				fieldtype="Link",
-				insert_after="blinkit_edi_order",
-				options="Blinkit PO Data",
-				read_only=1,
-				print_hide=1,
-			)
-		],
-		"Sales Invoice": [
-			dict(
-				fieldname="blinkit_edi_order",
-				label="Blinkit EDI Order",
-				fieldtype="Check",
-				insert_after="title",
-				read_only=1,
-				print_hide=1,
-			),
-			dict(
-				fieldname="blinkit_po",
-				label="Blinkit PO Data",
-				fieldtype="Link",
-				insert_after="blinkit_edi_order",
-				options="Blinkit PO Data",
-				read_only=1,
-				print_hide=1,
-			)
-		],
-		# "Sales Invoice Item": [
+		# "Quotation": [
 		# 	dict(
-		# 		fieldname="blinkit_po_line_number",
-		# 		label="Blinkit PO Line Number",
-		# 		fieldtype="Int",
-		# 		insert_after="so_detail",
+		# 		fieldname="blinkit_edi_order",
+		# 		label="Blinkit EDI Order",
+		# 		fieldtype="Check",
+		# 		insert_after="title",
+		# 		read_only=1,
+		# 		print_hide=1,
+		# 	),
+		# 	dict(
+		# 		fieldname="blinkit_po",
+		# 		label="Blinkit PO Data",
+		# 		fieldtype="Link",
+		# 		insert_after="blinkit_edi_order",
+		# 		options="Blinkit PO Data",
 		# 		read_only=1,
 		# 		print_hide=1,
 		# 	)
 		# ],
-		# "Delivery Note Item": [
+		# "Sales Order": [
 		# 	dict(
-		# 		fieldname="blinkit_po_line_number",
-		# 		label="Blinkit PO Line Number",
-		# 		fieldtype="Int",
-		# 		insert_after="so_detail",
+		# 		fieldname="blinkit_edi_order",
+		# 		label="Blinkit EDI Order",
+		# 		fieldtype="Check",
+		# 		insert_after="title",
+		# 		read_only=1,
+		# 		print_hide=1,
+		# 	),
+		# 	dict(
+		# 		fieldname="blinkit_po",
+		# 		label="Blinkit PO Data",
+		# 		fieldtype="Link",
+		# 		insert_after="blinkit_edi_order",
+		# 		options="Blinkit PO Data",
 		# 		read_only=1,
 		# 		print_hide=1,
 		# 	)
 		# ],
-		# "Sales Order Item": [
+		# "Delivery Note": [
 		# 	dict(
-		# 		fieldname="blinkit_po_line_number",
-		# 		label="Blinkit PO Line Number",
-		# 		fieldtype="Int",
-		# 		insert_after="quotation_item",
+		# 		fieldname="blinkit_edi_order",
+		# 		label="Blinkit EDI Order",
+		# 		fieldtype="Check",
+		# 		insert_after="title",
+		# 		read_only=1,
+		# 		print_hide=1,
+		# 	),
+		# 	dict(
+		# 		fieldname="blinkit_po",
+		# 		label="Blinkit PO Data",
+		# 		fieldtype="Link",
+		# 		insert_after="blinkit_edi_order",
+		# 		options="Blinkit PO Data",
 		# 		read_only=1,
 		# 		print_hide=1,
 		# 	)
 		# ],
-		# "Quotation Item": [
+		# "Sales Invoice": [
 		# 	dict(
-		# 		fieldname="blinkit_po_line_number",
-		# 		label="Blinkit PO Line Number",
-		# 		fieldtype="Int",
-		# 		insert_after="warehouse",
+		# 		fieldname="blinkit_edi_order",
+		# 		label="Blinkit EDI Order",
+		# 		fieldtype="Check",
+		# 		insert_after="title",
+		# 		read_only=1,
+		# 		print_hide=1,
+		# 	),
+		# 	dict(
+		# 		fieldname="blinkit_po",
+		# 		label="Blinkit PO Data",
+		# 		fieldtype="Link",
+		# 		insert_after="blinkit_edi_order",
+		# 		options="Blinkit PO Data",
 		# 		read_only=1,
 		# 		print_hide=1,
 		# 	)
-		# ]
+		# ],
+		"Sales Invoice Item": [
+			dict(
+				fieldname="blinkit_po_line_number",
+				label="Blinkit PO Line Number",
+				fieldtype="Int",
+				insert_after="so_detail",
+				read_only=1,
+				print_hide=1,
+			),
+			dict(
+				fieldname="blinkit_po",
+				label="Blinkit PO Data",
+				fieldtype="Link",
+				insert_after="blinkit_po_line_number",
+				options="Blinkit PO Data",
+				read_only=1,
+				print_hide=1,
+			)
+		],
+		"Delivery Note Item": [
+			dict(
+				fieldname="blinkit_po_line_number",
+				label="Blinkit PO Line Number",
+				fieldtype="Int",
+				insert_after="so_detail",
+				read_only=1,
+				print_hide=1,
+			),
+			dict(
+				fieldname="blinkit_po",
+				label="Blinkit PO Data",
+				fieldtype="Link",
+				insert_after="blinkit_po_line_number",
+				options="Blinkit PO Data",
+				read_only=1,
+				print_hide=1,
+			)
+		],
+		"Sales Order Item": [
+			dict(
+				fieldname="blinkit_po_line_number",
+				label="Blinkit PO Line Number",
+				fieldtype="Int",
+				insert_after="quotation_item",
+				read_only=1,
+				print_hide=1,
+			),
+			dict(
+				fieldname="blinkit_po",
+				label="Blinkit PO Data",
+				fieldtype="Link",
+				insert_after="blinkit_po_line_number",
+				options="Blinkit PO Data",
+				read_only=1,
+				print_hide=1,
+			)
+		],
+		"Quotation Item": [
+			dict(
+				fieldname="blinkit_po_line_number",
+				label="Blinkit PO Line Number",
+				fieldtype="Int",
+				insert_after="warehouse",
+				read_only=1,
+				print_hide=1,
+			),
+			dict(
+				fieldname="blinkit_po",
+				label="Blinkit PO Data",
+				fieldtype="Link",
+				insert_after="blinkit_po_line_number",
+				options="Blinkit PO Data",
+				read_only=1,
+				print_hide=1,
+			)
+		]
 		
-	
 	}
 
 	create_custom_fields(custom_fields)
