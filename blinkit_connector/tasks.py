@@ -108,6 +108,15 @@ def create_sales_docs():
             quotation.customer_address = customer_and_billing_details.customer_address
         if customer_and_billing_details.shipping_address:
             quotation.shipping_address_name = customer_and_billing_details.shipping_address
+        
+        #customisation for Lifelong
+        quotation.location = frappe.db.get_value("Location", {"address": quotation.company_address}, "name")
+        quotation.contact_person_name = "BlinkIt API"
+        quotation.contact_no = "9988776655"
+        quotation.po_no = purchase_order_details.get("purchase_order_number")
+        quotation.po_date = transaction_date
+        quotation.payment_terms_template = "100% at 30 days credit"
+        
         for item in order_items:
             item_details = {
                 "item_code": get_item_code(item, customer_and_billing_details.customer),
