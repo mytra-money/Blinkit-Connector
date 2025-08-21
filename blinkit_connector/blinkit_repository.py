@@ -86,7 +86,7 @@ class BlinkitRepository:
         if not len(item_errors):
             data["STATUS"] = "Success"
         else:
-            data["STATUS"] = "PARTIAL_SUCCESS"
+            data["STATUS"] = "PartialSuccess"
             data["ITEM_ERRORS"] = item_errors
         url = "edi/edi-response-json/"
         try:
