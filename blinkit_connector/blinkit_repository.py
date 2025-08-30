@@ -130,11 +130,11 @@ class BlinkitRepository:
                 "GSTIN": po_data.get("financial_details").get("gst_tin")
             },
             "ShipmentDetails": {
-                "EWayBillNumber": "",
+                "EWayBillNumber": sales_invoice.ewaybill,
                 "DeliveryType": "COURIER",
-                "DeliveryPartner": "Test Transporter", #shipment_doc.transporter,
-                "DeliveryPartnerID": "TEST",#shipment_doc.gst_transporter_id,
-                "DeliveryTrackingCode": "TEST123",#shipment_doc.awb_number
+                "DeliveryPartner": shipment_doc.transporter,
+                "DeliveryPartnerID": shipment_doc.gst_transporter_id,
+                "DeliveryTrackingCode": shipment_doc.awb_number
             },
             "items": []
         }
@@ -150,23 +150,23 @@ class BlinkitRepository:
                 "SKUDescription": po_item.get("name"),
                 "BatchNumber": "",
                 "UPC": po_item.get("upc"),
-                "MRP": po_item.get("mrp"),
+                "MRP": flt(po_item.get("mrp"), precision=2),
                 "Quantity": item.qty,
                 "HSNCode": item.gst_hsn_code,
                 "TaxDistribution": {
-                    "CGSTPercentage": item.cgst_rate,
-                    "SGSTPercentage": item.sgst_rate,
-                    "IGSTPercentage": item.igst_rate,
+                    "CGSTPercentage": flt(po_data.get("cgst_value"), precision=2) if po_data.get("cgst_value") else 0.0,
+                    "SGSTPercentage": flt(po_data.get("sgst_value"), precision=2) if po_data.get("sgst_value") else 0.0,
+                    "IGSTPercentage": flt(po_data.get("igst_value"), precision=2) if po_data.get("igst_value") else 0.0,
                     "UGSTPercentage": 0.0,
-                    "CESSPercentage": item.cess_rate,
-                    "AdditionalCESSValue": item.cess_non_advol_rate,
+                    "CESSPercentage": 0.0,
+                    "AdditionalCESSValue": 0.0,
                 },
                 "UnitBasicPrice": item.base_rate,
-                "UnitLandingPrice": flt(item.base_rate+item.cgst_amount/item.qty+item.sgst_amount/item.qty+item.igst_amount/item.qty+item.cess_amount/item.qty+item.cess_non_advol_amount/item.qty, precision=2),
+                "UnitLandingPrice": flt(po_item.get("landing_rate"), precision=2),
                 # "ExpiryDate": "",
                 # "MfgDate": "",
-                "Grammage": "",
-                "UOM": item.uom,
+                "Grammage": str(item.weight_per_unit),
+                "UOM": po_item.get("uom"),
                 }
             
             data["items"].append(item_data)
