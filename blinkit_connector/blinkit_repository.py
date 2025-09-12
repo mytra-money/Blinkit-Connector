@@ -131,10 +131,7 @@ class BlinkitRepository:
             },
             "ShipmentDetails": {
                 "EWayBillNumber": sales_invoice.ewaybill,
-                "DeliveryType": "COURIER",
-                "DeliveryPartner": shipment_doc.transporter,
-                "DeliveryPartnerID": shipment_doc.gst_transporter_id,
-                "DeliveryTrackingCode": shipment_doc.awb_number
+                "DeliveryType": "SELF"
             },
             "items": []
         }
@@ -148,15 +145,15 @@ class BlinkitRepository:
             item_data = {
                 "ItemID": po_item.get("item_id"),
                 "SKUDescription": po_item.get("name"),
-                "BatchNumber": "",
+                "BatchNumber": frappe.db.get_value("Deliery Note Item", item.dn_detail, "batch_no"),
                 "UPC": po_item.get("upc"),
                 "MRP": flt(po_item.get("mrp"), precision=2),
                 "Quantity": item.qty,
                 "HSNCode": item.gst_hsn_code,
                 "TaxDistribution": {
-                    "CGSTPercentage": flt(po_data.get("cgst_value"), precision=2) if po_data.get("cgst_value") else 0.0,
-                    "SGSTPercentage": flt(po_data.get("sgst_value"), precision=2) if po_data.get("sgst_value") else 0.0,
-                    "IGSTPercentage": flt(po_data.get("igst_value"), precision=2) if po_data.get("igst_value") else 0.0,
+                    "CGSTPercentage": flt(po_item.get("cgst_value"), precision=2) if po_item.get("cgst_value") else 0.0,
+                    "SGSTPercentage": flt(po_item.get("sgst_value"), precision=2) if po_item.get("sgst_value") else 0.0,
+                    "IGSTPercentage": flt(po_item.get("igst_value"), precision=2) if po_item.get("igst_value") else 0.0,
                     "UGSTPercentage": 0.0,
                     "CESSPercentage": 0.0,
                     "AdditionalCESSValue": 0.0,
