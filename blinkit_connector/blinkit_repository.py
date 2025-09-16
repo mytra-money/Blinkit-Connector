@@ -145,7 +145,7 @@ class BlinkitRepository:
             item_data = {
                 "ItemID": po_item.get("item_id"),
                 "SKUDescription": po_item.get("name"),
-                "BatchNumber": frappe.db.get_value("Deliery Note Item", item.dn_detail, "batch_no"),
+                "BatchNumber": frappe.db.get_value("Delivery Note Item", item.dn_detail, "batch_no"),
                 "UPC": po_item.get("upc"),
                 "MRP": flt(po_item.get("mrp"), precision=2),
                 "Quantity": item.qty,
