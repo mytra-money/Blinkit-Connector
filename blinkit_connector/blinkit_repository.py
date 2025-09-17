@@ -95,10 +95,9 @@ class BlinkitRepository:
             frappe.log_error("BlinkIt Acknowledge PO Error")
             frappe.throw("Cannot Acknowledge BlinkIt PO")
     
-    def send_asn(self, sales_invoice, blinkit_po, shipment):
+    def send_asn(self, sales_invoice, blinkit_po, shipment_doc):
         blinkit_po_data = frappe.get_cached_doc("Blinkit PO Data", blinkit_po)
         company_address = frappe.get_cached_doc("Address", sales_invoice.company_address)
-        shipment_doc  = frappe.get_cached_doc("Shipment", shipment)
         po_data = json.loads(blinkit_po_data.po_data)
         po_items_by_line = {
             item["line_number"]: item for item in po_data.get("item_data", [])
