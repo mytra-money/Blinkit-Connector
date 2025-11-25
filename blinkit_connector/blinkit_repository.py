@@ -135,16 +135,23 @@ class BlinkitRepository:
             "items": []
         }
         asn_items = {}
+        gst_totals = {}
         for item in sales_invoice.items:
-            # data["TotalInvoiceCGST"]+=item.cgst_amount
-            # data["TotalInvoiceSGST"]+=item.sgst_amount
-            # data["TotalInvoiceIGST"]+=item.igst_amount
-            # data["TotalInvoiceCESS"]+=item.cess_amount
-            # data["Total_Invoice_ADV_CESS"]+=item.cess_non_advol_amount
             po_item = po_items_by_line.get(item.blinkit_po_line_number, {})
             batch_no = frappe.db.get_value("Delivery Note Item", item.dn_detail, "batch_no")
             upc = po_item.get("upc")
             key = (upc, batch_no)
+            base_amount = item.base_rate * item.qty
+            cgst = flt(po_item.get("cgst_value"), 2) or 0.0
+            sgst = flt(po_item.get("sgst_value"), 2) or 0.0
+            igst = flt(po_item.get("igst_value"), 2) or 0.0
+            def add_gst(gtype, perc):
+                  if perc and perc > 0:
+                    key = (gtype, perc)
+                    gst_totals[key] = gst_totals.get(key, 0) + (base_amount * perc / 100)
+            add_gst("CGST", cgst)
+            add_gst("SGST", sgst)
+            add_gst("IGST", igst)
             if key not in asn_items:
                 asn_items[key] = {
                     "ItemID": po_item.get("item_id"),
@@ -155,9 +162,9 @@ class BlinkitRepository:
                     "Quantity": item.qty,
                     "HSNCode": item.gst_hsn_code,
                     "TaxDistribution": {
-                        "CGSTPercentage": flt(po_item.get("cgst_value"), precision=2) if po_item.get("cgst_value") else 0.0,
-                        "SGSTPercentage": flt(po_item.get("sgst_value"), precision=2) if po_item.get("sgst_value") else 0.0,
-                        "IGSTPercentage": flt(po_item.get("igst_value"), precision=2) if po_item.get("igst_value") else 0.0,
+                        "CGSTPercentage": cgst,
+                        "SGSTPercentage": sgst,
+                        "IGSTPercentage": igst,
                         "UGSTPercentage": 0.0,
                         "CESSPercentage": 0.0,
                         "AdditionalCESSValue": 0.0,
@@ -173,6 +180,12 @@ class BlinkitRepository:
                 asn_items[key]["Quantity"] += item.qty
         
         data["items"] = list(asn_items.values())
+        for (gtype, perc), total in gst_totals.items():
+            data["TaxDistribution"].append({
+                "GSTType": gtype,
+                "GSTPercentage": perc,
+                "GSTTotal": flt(total, 2)
+            })
 
         url = "edi/v3/asn-response/{0}/".format(blinkit_po_data.po_number)
         try:
