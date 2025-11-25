@@ -134,6 +134,7 @@ class BlinkitRepository:
             },
             "items": []
         }
+        asn_items = {}
         for item in sales_invoice.items:
             # data["TotalInvoiceCGST"]+=item.cgst_amount
             # data["TotalInvoiceSGST"]+=item.sgst_amount
@@ -141,31 +142,37 @@ class BlinkitRepository:
             # data["TotalInvoiceCESS"]+=item.cess_amount
             # data["Total_Invoice_ADV_CESS"]+=item.cess_non_advol_amount
             po_item = po_items_by_line.get(item.blinkit_po_line_number, {})
-            item_data = {
-                "ItemID": po_item.get("item_id"),
-                "SKUDescription": po_item.get("name"),
-                "BatchNumber": frappe.db.get_value("Delivery Note Item", item.dn_detail, "batch_no"),
-                "UPC": po_item.get("upc"),
-                "MRP": flt(po_item.get("mrp"), precision=2),
-                "Quantity": item.qty,
-                "HSNCode": item.gst_hsn_code,
-                "TaxDistribution": {
-                    "CGSTPercentage": flt(po_item.get("cgst_value"), precision=2) if po_item.get("cgst_value") else 0.0,
-                    "SGSTPercentage": flt(po_item.get("sgst_value"), precision=2) if po_item.get("sgst_value") else 0.0,
-                    "IGSTPercentage": flt(po_item.get("igst_value"), precision=2) if po_item.get("igst_value") else 0.0,
-                    "UGSTPercentage": 0.0,
-                    "CESSPercentage": 0.0,
-                    "AdditionalCESSValue": 0.0,
-                },
-                "UnitBasicPrice": item.base_rate,
-                "UnitLandingPrice": flt(po_item.get("landing_rate"), precision=2),
-                # "ExpiryDate": "",
-                # "MfgDate": "",
-                "Grammage": str(item.weight_per_unit),
-                "UOM": po_item.get("uom"),
-                }
-            
-            data["items"].append(item_data)
+            batch_no = frappe.db.get_value("Delivery Note Item", item.dn_detail, "batch_no")
+            upc = po_item.get("upc")
+            key = (upc, batch_no)
+            if key not in asn_items:
+                asn_items[key] = {
+                    "ItemID": po_item.get("item_id"),
+                    "SKUDescription": po_item.get("name"),
+                    "BatchNumber": batch_no,
+                    "UPC": upc,
+                    "MRP": flt(po_item.get("mrp"), precision=2),
+                    "Quantity": item.qty,
+                    "HSNCode": item.gst_hsn_code,
+                    "TaxDistribution": {
+                        "CGSTPercentage": flt(po_item.get("cgst_value"), precision=2) if po_item.get("cgst_value") else 0.0,
+                        "SGSTPercentage": flt(po_item.get("sgst_value"), precision=2) if po_item.get("sgst_value") else 0.0,
+                        "IGSTPercentage": flt(po_item.get("igst_value"), precision=2) if po_item.get("igst_value") else 0.0,
+                        "UGSTPercentage": 0.0,
+                        "CESSPercentage": 0.0,
+                        "AdditionalCESSValue": 0.0,
+                    },
+                    "UnitBasicPrice": item.base_rate,
+                    "UnitLandingPrice": flt(po_item.get("landing_rate"), precision=2),
+                    # "ExpiryDate": "",
+                    # "MfgDate": "",
+                    "Grammage": str(item.weight_per_unit),
+                    "UOM": po_item.get("uom"),
+                    }
+            else:
+                asn_items[key]["Quantity"] += item.qty
+        
+        data["items"] = list(asn_items.values())
 
         url = "edi/v3/asn-response/{0}/".format(blinkit_po_data.po_number)
         try:
