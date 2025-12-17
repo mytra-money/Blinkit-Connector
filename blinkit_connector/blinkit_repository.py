@@ -139,7 +139,7 @@ class BlinkitRepository:
         if shipment_doc.get("custom_load_type", "") == "Part Truck":
             data["ShipmentDetails"]["DeliveryType"] = "COURIER"
             data["ShipmentDetails"]["DeliveryPartner"] = shipment_doc.transporter
-            data["ShipmentDetails"]["DeliveryPartnerID"] = shipment_doc.gst_transporter_id
+            # data["ShipmentDetails"]["DeliveryPartnerID"] = shipment_doc.gst_transporter_id
             data["ShipmentDetails"]["DeliveryTrackingCode"] = shipment_doc.awb_number
         
         asn_items = {}
