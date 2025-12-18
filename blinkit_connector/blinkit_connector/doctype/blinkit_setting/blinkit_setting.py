@@ -90,16 +90,6 @@ def setup_custom_fields():
 		# 		print_hide=1,
 		# 	)
 		# ],
-		"Sales Invoice": [
-			dict(
-				fieldname="sent_blinkit_asn",
-				label="Sent BlinkIt ASN",
-				fieldtype="Check",
-				insert_after="title",
-				read_only=1,
-				print_hide=1,
-			)
-		],
 		"Sales Invoice Item": [
 			dict(
 				fieldname="blinkit_po_line_number",
@@ -115,6 +105,14 @@ def setup_custom_fields():
 				fieldtype="Link",
 				insert_after="blinkit_po_line_number",
 				options="Blinkit PO Data",
+				read_only=1,
+				print_hide=1,
+			),
+			dict(
+				fieldname="sent_blinkit_asn",
+				label="Sent BlinkIt ASN",
+				fieldtype="Check",
+				insert_after="blinkit_po",
 				read_only=1,
 				print_hide=1,
 			)
