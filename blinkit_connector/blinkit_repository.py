@@ -199,7 +199,8 @@ class BlinkitRepository:
         try:
             asn_ackn = self.make_request("POST", url, data)
             if int(asn_ackn["status"]) == 1:
-                frappe.db.set_value("Sales Invoice", sales_invoice.name, "sent_blinkit_asn", 1)
+                for item in sales_invoice.items:
+                    frappe.db.set_value("Sales Invoice Item", item.name, "sent_blinkit_asn", 1)
                 frappe.msgprint("ASN Submitted Sucessfuly for Sales Invoice: {0}".format(sales_invoice.name))
         except Exception:
             frappe.log_error("BlinkIt ASN Error")
@@ -229,10 +230,11 @@ def submit_asn(shipment):
     for s in sales_invoices:
         sales_invoice = frappe.get_cached_doc("Sales Invoice", s)
         blinkit_po = sales_invoice.items[0].blinkit_po
-        if blinkit_po and not sales_invoice.sent_blinkit_asn:
+        sent_blinkit_asn = sales_invoice.items[0].sent_blinkit_asn
+        if blinkit_po and not sent_blinkit_asn:
             BlinkitRepository().send_asn(sales_invoice, blinkit_po, shipment_doc)
             return
-        elif blinkit_po and sales_invoice.sent_blinkit_asn:
+        elif blinkit_po and sent_blinkit_asn:
             return
         else:
             frappe.msgprint("Sales Invoice {} is not synced via BlinkIt".format(s))
