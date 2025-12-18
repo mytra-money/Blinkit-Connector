@@ -232,7 +232,7 @@ def submit_asn(shipment):
         if blinkit_po and not sales_invoice.sent_blinkit_asn:
             BlinkitRepository().send_asn(sales_invoice, blinkit_po, shipment_doc)
             return
-        elif sales_invoice.sent_blinkit_asn:
+        elif blinkit_po and sales_invoice.sent_blinkit_asn:
             return
         else:
             frappe.msgprint("Sales Invoice {} is not synced via BlinkIt".format(s))
