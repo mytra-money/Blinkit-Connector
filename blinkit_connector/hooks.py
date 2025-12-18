@@ -153,6 +153,11 @@ scheduler_events = {
 # 	"monthly": [
 # 		"blinkit_connector.tasks.monthly"
 # 	],
+ 	"cron": {
+        "0 */6 * * *": [
+            "blinkit_connector.tasks.send_asn_for_recent_shipments"
+        ]
+    }
 }
 
 # Testing

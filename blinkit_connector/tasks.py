@@ -1,6 +1,6 @@
 import frappe
 import json
-from frappe.utils.data import (getdate)
+from frappe.utils.data import (getdate, add_to_date, get_datetime)
 
 @frappe.whitelist()
 def hourly():
@@ -158,3 +158,18 @@ def create_sales_docs():
             continue
 
     return
+
+def send_asn_for_recent_shipments():
+    from blinkit_connector.blinkit_repository import submit_asn
+    six_hours_ago = add_to_date(get_datetime(), hours=-6)
+    shipment_names = frappe.get_all(
+        "Shipment",
+        filters={
+            "modified": [">=", six_hours_ago],
+            "pickup_from_type": "Company",
+            "docstatus": 1
+        },
+        pluck="name"
+    )
+    for shipment_name in shipment_names:
+        submit_asn(shipment_name)

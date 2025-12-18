@@ -90,25 +90,16 @@ def setup_custom_fields():
 		# 		print_hide=1,
 		# 	)
 		# ],
-		# "Sales Invoice": [
-		# 	dict(
-		# 		fieldname="blinkit_edi_order",
-		# 		label="Blinkit EDI Order",
-		# 		fieldtype="Check",
-		# 		insert_after="title",
-		# 		read_only=1,
-		# 		print_hide=1,
-		# 	),
-		# 	dict(
-		# 		fieldname="blinkit_po",
-		# 		label="Blinkit PO Data",
-		# 		fieldtype="Link",
-		# 		insert_after="blinkit_edi_order",
-		# 		options="Blinkit PO Data",
-		# 		read_only=1,
-		# 		print_hide=1,
-		# 	)
-		# ],
+		"Sales Invoice": [
+			dict(
+				fieldname="sent_blinkit_asn",
+				label="Sent BlinkIt ASN",
+				fieldtype="Check",
+				insert_after="title",
+				read_only=1,
+				print_hide=1,
+			)
+		],
 		"Sales Invoice Item": [
 			dict(
 				fieldname="blinkit_po_line_number",
