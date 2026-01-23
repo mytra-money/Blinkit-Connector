@@ -131,6 +131,9 @@ doc_events = {
 	"Sales Order": {
 		"after_insert": "blinkit_connector.doctype_events.sales_order.after_insert",
 		"before_submit": "blinkit_connector.doctype_events.sales_order.before_submit"
+	},
+	"Shipment": {
+		"validate": "blinkit_connector.doctype_events.shipment.validate",
 	}
 }
 

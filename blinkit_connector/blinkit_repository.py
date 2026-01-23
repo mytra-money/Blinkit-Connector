@@ -201,7 +201,9 @@ class BlinkitRepository:
             if int(asn_ackn["status"]) == 1:
                 for item in sales_invoice.items:
                     frappe.db.set_value("Sales Invoice Item", item.name, "sent_blinkit_asn", 1)
+                    frappe.db.commit()
                 frappe.msgprint("ASN Submitted Sucessfuly for Sales Invoice: {0}".format(sales_invoice.name))
+                return
         except Exception:
             frappe.log_error("BlinkIt ASN Error")
             frappe.throw("Cannot send ASN for BlinkIt PO")
@@ -214,16 +216,13 @@ def submit_asn(shipment):
     delivery_note_si_rows = frappe.get_all(
         "Delivery Note Item",
         fields=["against_sales_invoice"],
-        filters=[["parent", "in", delivery_notes]]
+        filters=[["parent", "in", delivery_notes],["docstatus", "=", 1]]
     )
     delivery_note_sales_invoices = {row.against_sales_invoice for row in delivery_note_si_rows if row.against_sales_invoice}
     sales_invoice_items = frappe.get_all(
         "Sales Invoice Item",
         fields=["parent"],
-        filters=[
-            ["delivery_note", "in", delivery_notes],
-            ["docstatus", "=", 1]
-        ]
+        filters=[["delivery_note", "in", delivery_notes],["docstatus", "=", 1]]
     )
     sales_invoices_delivery_note = {row.parent for row in sales_invoice_items if row.parent}
     sales_invoices = delivery_note_sales_invoices.union(sales_invoices_delivery_note)
@@ -233,7 +232,10 @@ def submit_asn(shipment):
         sent_blinkit_asn = sales_invoice.items[0].sent_blinkit_asn
         if blinkit_po and not sent_blinkit_asn:
             BlinkitRepository().send_asn(sales_invoice, blinkit_po, shipment_doc)
-            return
+            for i in shipment_doc.blinkit_invoice:
+                if i.sales_invoice == s:
+                    frappe.db.set_value("BlinkIt Sales Invoice", i.name, "sent_blinkit_asn", 1)
+                    frappe.db.commit()
         elif blinkit_po and sent_blinkit_asn:
             return
         else:

@@ -173,6 +173,17 @@ def setup_custom_fields():
 				read_only=1,
 				print_hide=1,
 			)
+		],
+		"Shipment": [
+			dict(
+				fieldname="blinkit_invoice",
+				label="Blinkit Invoice",
+				fieldtype="Table",
+				options="BlinkIt Sales Invoice",
+				insert_after="shipment_delivery_note",
+				read_only=1,
+				print_hide=1,
+			)
 		]
 		
 	}
