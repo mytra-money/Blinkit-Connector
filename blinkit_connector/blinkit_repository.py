@@ -101,7 +101,7 @@ class BlinkitRepository:
             data["data"]["po_status"] = "partially_accepted"
             data["message"] = "PO Sync completed. Some items were rejected."
             data["data"]["errors"] = item_errors
-        url = "public/v1/po/acknowledgement"
+        url = "webhook/public/v1/po/acknowledgement"
         try:
             self.make_request("POST", url, data)
         except Exception:
@@ -208,7 +208,7 @@ class BlinkitRepository:
                 "GSTTotal": flt(total, 2)
             })
 
-        url = "orders/edi/v3/asn-response/{0}/".format(blinkit_po_data.po_number)
+        url = "webhooks/orders/edi/v3/asn-response/{0}/".format(blinkit_po_data.po_number)
         try:
             asn_ackn = self.make_request("POST", url, data)
             if int(asn_ackn["status"]) == 1:
