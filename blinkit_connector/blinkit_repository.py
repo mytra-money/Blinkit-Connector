@@ -2,7 +2,9 @@ import frappe
 import json
 import requests
 from frappe.integrations.utils import create_request_log
-from frappe.utils.data import flt, format_date
+from frappe.utils.data import flt, format_date, get_datetime_str
+import datetime
+import pytz
 
 class BlinkitRepository:
     def __init__(self):
@@ -63,14 +65,23 @@ class BlinkitRepository:
         sales_doc = frappe.get_cached_doc(blinkit_po_data.sync_via, blinkit_po_data.sync_doc)
         item_errors = []
         data = {
-                "RECEIVER_CODE": po_data.get("receiver_code"),
-                "PO_NUMBER": int(blinkit_po_data.po_number),
-                "STATUS": "Success",
-                "EVENT_NAME": "PO_CREATION",
-                "EVENT_MESSAGE": "PO_CREATION"
+            "success": True,
+            "timestamp": get_datetime_str(datetime.datetime.now(pytz.UTC)),
+            "data": {
+                "po_number": blinkit_po_data.po_number,
             }
-        
+        }
+    
         for po_item in po_data.get("item_data", []):
+            error_message = {
+                "code": "E105",
+                "field_name": "item_id",
+                "message": "insufficient stock",
+                "description": "stock not available for said SKU",
+                "error_params":{
+                    "item_id": po_item.get("item_id")
+                }
+            }
             matching_sales_item = next(
                 (i for i in sales_doc.items if i.blinkit_po_line_number == po_item.get("line_number")),
                 None
@@ -79,16 +90,18 @@ class BlinkitRepository:
                 po_qty = float(po_item.get("units_ordered", 0))
                 sales_qty = float(matching_sales_item.qty)
                 if sales_qty < po_qty:
-                    item_errors.append({"item_id": po_item.get("item_id"), "error_message": "insufficient stock"})    
+                    item_errors.append(error_message) 
             else:
-                item_errors.append({"item_id": po_item.get("item_id"), "error_message": "insufficient stock"})
+                item_errors.append(error_message)
         
         if not len(item_errors):
-            data["STATUS"] = "Success"
+            data["data"]["po_status"] = "accepted"
+            data["message"] = "PO Synced Successfully"
         else:
-            data["STATUS"] = "PartialSuccess"
-            data["ITEM_ERRORS"] = item_errors
-        url = "edi/edi-response-json/"
+            data["data"]["po_status"] = "partially_accepted"
+            data["message"] = "PO Sync completed. Some items were rejected."
+            data["data"]["errors"] = item_errors
+        url = "public/v1/po/acknowledgement"
         try:
             self.make_request("POST", url, data)
         except Exception:
@@ -195,7 +208,7 @@ class BlinkitRepository:
                 "GSTTotal": flt(total, 2)
             })
 
-        url = "edi/v3/asn-response/{0}/".format(blinkit_po_data.po_number)
+        url = "orders/edi/v3/asn-response/{0}/".format(blinkit_po_data.po_number)
         try:
             asn_ackn = self.make_request("POST", url, data)
             if int(asn_ackn["status"]) == 1:
