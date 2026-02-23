@@ -20,14 +20,10 @@ class BlinkitRepository:
         method: str = "GET",
         append_to_base_uri: str = "",
         data: dict = None,
+        headers: dict = None,
         log_request: bool =True
     ) -> dict:
         url = self.base_url + append_to_base_uri
-        headers = {}
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": "Token {0}".format(self.auth_header)
-        }
         if log_request:
             integration_request = create_request_log(data=data, service_name="BlinkIt EDI", request_headers=headers, is_remote_request=1, url=url)
         try:
@@ -64,6 +60,10 @@ class BlinkitRepository:
         po_data = json.loads(blinkit_po_data.po_data)
         sales_doc = frappe.get_cached_doc(blinkit_po_data.sync_via, blinkit_po_data.sync_doc)
         item_errors = []
+        headers = {
+            "Content-Type": "application/json",
+            "Api-Key": self.auth_header
+        }
         data = {
             "success": True,
             "timestamp": get_datetime_str(datetime.datetime.now(pytz.UTC)),
@@ -103,7 +103,7 @@ class BlinkitRepository:
             data["data"]["errors"] = item_errors
         url = "webhook/public/v1/po/acknowledgement"
         try:
-            self.make_request("POST", url, data)
+            self.make_request("POST", url, data, headers)
         except Exception:
             frappe.log_error("BlinkIt Acknowledge PO Error")
             frappe.throw("Cannot Acknowledge BlinkIt PO")
@@ -209,8 +209,12 @@ class BlinkitRepository:
             })
 
         url = "webhooks/orders/edi/v3/asn-response/{0}/".format(blinkit_po_data.po_number)
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Token {0}".format(self.auth_header)
+        }
         try:
-            asn_ackn = self.make_request("POST", url, data)
+            asn_ackn = self.make_request("POST", url, data, headers)
             if int(asn_ackn["status"]) == 1:
                 for item in sales_invoice.items:
                     frappe.db.set_value("Sales Invoice Item", item.name, "sent_blinkit_asn", 1)
