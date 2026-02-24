@@ -126,11 +126,11 @@ after_install = "blinkit_connector.setup.after_install"
 
 doc_events = {
 	"Quotation": {
-		"before_submit": "blinkit_connector.doctype_events.quotation.before_submit"
+		"before_submit": "blinkit_connector.doctype_events.quotation.before_submit",
 	},
 	"Sales Order": {
 		"after_insert": "blinkit_connector.doctype_events.sales_order.after_insert",
-		"before_submit": "blinkit_connector.doctype_events.sales_order.before_submit"
+		"before_submit": "blinkit_connector.doctype_events.sales_order.before_submit",
 	},
 	"Shipment": {
 		"validate": "blinkit_connector.doctype_events.shipment.validate",
