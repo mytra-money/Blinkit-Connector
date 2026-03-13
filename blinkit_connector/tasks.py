@@ -30,15 +30,18 @@ def create_sales_docs():
             return blinkit_setting.default_item
     def get_customer_and_billing_details(order_details) -> frappe._dict:
         blinkit_outlet_id = str(order_details.get("grofers_delivery_details", {}).get("grofers_outlet_id"))
+        blinkit_outlet_gstin = str(order_details.get("financial_details", {}).get("gst_tin"))
         customer_details = frappe._dict({"customer":None, "customer_address":None, "shipping_address":None, "warehouse": None, "billing_address": None})
         for w in blinkit_setting.linked_warehouses:
             if blinkit_outlet_id == w.blinkit_outlet_id:
-                customer_details.warehouse = w.warehouse
-                customer_details.customer = w.customer
-                customer_details.billing_address = w.billing_address
-                customer_details.customer_address = w.customer_address
-                customer_details.shipping_address = w.shipping_address
-                break
+                gst = frappe.db.get_value("Address", w.billing_address, "gstin")
+                if blinkit_outlet_gstin == gst:
+                    customer_details.warehouse = w.warehouse
+                    customer_details.customer = w.customer
+                    customer_details.billing_address = w.billing_address
+                    customer_details.customer_address = w.customer_address
+                    customer_details.shipping_address = w.shipping_address
+                    break
         if not customer_details.customer:
             customer_details.customer = blinkit_setting.default_customer
         if not customer_details.warehouse:
