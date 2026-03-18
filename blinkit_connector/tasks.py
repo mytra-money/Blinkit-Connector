@@ -34,7 +34,7 @@ def create_sales_docs():
         customer_details = frappe._dict({"customer":None, "customer_address":None, "shipping_address":None, "warehouse": None, "billing_address": None})
         for w in blinkit_setting.linked_warehouses:
             if blinkit_outlet_id == w.blinkit_outlet_id:
-                gst = frappe.db.get_value("Address", w.billing_address, "gstin")
+                gst = frappe.db.get_value("Address", w.customer_address, "gstin")
                 if blinkit_outlet_gstin == gst:
                     customer_details.warehouse = w.warehouse
                     customer_details.customer = w.customer
