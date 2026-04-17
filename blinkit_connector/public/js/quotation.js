@@ -22,7 +22,7 @@ frappe.ui.form.on('Quotation', {
             freeze: true,
             freeze_message: __("Refreshing BlinkIt Order Items"),
 			args: {
-                shipment: frm.doc.name,
+                quotation: frm.doc.name,
 			},
             callback: (r) => 
                 frappe.msgprint({
