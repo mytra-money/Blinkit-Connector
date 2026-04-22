@@ -46,27 +46,31 @@ def refresh_blinkit_items(quotation):
         else:
             return blinkit_setting.default_item
     
-    updated = 0
     blinkit_po = quotation.items[0].blinkit_po
     if not blinkit_po:
         return
     blinkit_po_data = frappe.get_doc("Blinkit PO Data", blinkit_po)
     po_data = json.loads(blinkit_po_data.po_data)
-    po_items_by_line = {
-            item["line_number"]: item for item in po_data.get("item_data", [])
+    order_items = po_data.get("item_data")
+    quotation.items = []
+    for item in order_items:
+        item_details = {
+            "item_code": get_item_code(item, quotation.party_name),
+            "customer_item_code": item.get("item_id"),
+            "qty": item.get("units_ordered"),
+            "uom": "Nos",
+            "rate": item.get("cost_price"),
+            "conversion_factor": 1.0,
+            "blinkit_po_line_number": item.get("line_number"),
+            "blinkit_po": blinkit_po_data
         }
-    for row in quotation.items:
-        po_item = po_items_by_line.get(row.blinkit_po_line_number, {})
+        quotation.append("items", item_details)
+    quotation.taxes_and_charges = None
+    quotation.set("taxes", [])
+    quotation.run_method("set_missing_lead_customer_details")
+    quotation.run_method("set_price_list_and_item_details")
+    quotation.run_method("calculate_taxes_and_totals")
+    quotation.payment_schedule = []
+    quotation.save()
 
-        new_item_code = get_item_code(po_item, quotation.party_name)
-
-        if row.item_code != new_item_code:
-            row.item_code = new_item_code
-            updated += 1
-
-    if updated:
-        quotation.run_method("set_price_list_and_item_details")
-        quotation.run_method("calculate_taxes_and_totals")
-        quotation.save()
-
-    return f"{updated} item(s) updated based on latest Item master"
+    return f"Item(s) updated based on latest Item master"
